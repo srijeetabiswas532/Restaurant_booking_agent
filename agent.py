@@ -26,7 +26,7 @@ aiplatform.init(project=project_id, location=location)
 
 # initializing LLM
 llm = ChatVertexAI(
-    model_name='gemini-pro',
+    model_name="gemini-pro",
     temperature=0.7,
 )
 
