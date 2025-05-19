@@ -27,3 +27,10 @@ May 15, 2025:
 * imports from typing are type hint helpers: useful for documentation, industry-standard code, not necessary for code to run
 * gemini-pro is free (rn) and chatgpt gives you a free trial of gpt-3.5
 * zero-shot-react-description
+
+**Day 2:** Mostly troubleshooting pushing onto github & connecting with GCLOUD so I can use the gemini model.
+* When linking to the remote github repo for the first time, it is better to initialize the repo from the command line or have a completely empty github repo remotely (otherwise there will be contradictions)
+* GCLOUD requires a lot of authentication and billing
+* You cannot push anything with a KEY to github (especially if it's public for security reasons)
+* gemini-pro model can only work in certain locations
+* better to have billing account and project account be on one account
