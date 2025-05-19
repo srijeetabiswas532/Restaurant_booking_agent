@@ -34,3 +34,5 @@ May 15, 2025:
 * You cannot push anything with a KEY to github (especially if it's public for security reasons)
 * gemini-pro model can only work in certain locations
 * better to have billing account and project account be on one account
+
+* YOU LEFT OFF RUNNING YOUR AGENT.PY SCRIPT, YOU NEED TO ENABLE GENERATIVE AI IN YOUR GCLOUD ACCOUNT. THIS HAPPENS BECAUSE GOOGLE RESTRICTS GEMINI ACCESS PER PROJECT, EVEN IF VERTEXAI IS ENABLED. 
