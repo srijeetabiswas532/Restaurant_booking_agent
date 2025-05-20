@@ -3,10 +3,12 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.agents import Tool, initialize_agent
 from langchain.agents.agent_types import AgentType
-from tools import book_reservation
+from tools import book_reservation_tool
 
 from langchain_google_vertexai import ChatVertexAI
 from google.cloud import aiplatform
+
+from langchain.memory import ConversationBufferMemory # adding conversational memory
 
 # loading in API key from .env
 load_dotenv()
@@ -26,28 +28,33 @@ aiplatform.init(project=project_id, location=location)
 
 # initializing LLM
 llm = ChatVertexAI(
-    model_name="gemini-pro",
+    model_name="gemini-2.0-flash-001",
     temperature=0.7,
 )
 
 # tools
 tools = [
-    Tool(
-        name='book_reservation',
-        func=book_reservation,
-        description="Use this to book a restaurant reservation. Input should include name, date, time, and number of people."
-    )
+    book_reservation_tool
 ]
+
+memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
 
 # initializing agent
 agent = initialize_agent(
     tools=tools,
     llm=llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, # it's zero-shot (LLM decides tools based on descs, no examples); react (langchain agent framework); description (tool selection based off of text descs for each tool)
+    # agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,  # it's structured chat (works with structured tools (multi-input))l; zero-shot (LLM decides tools based on descs, no examples); react (langchain agent framework); description (tool selection based off of text descs for each tool)
+    agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
+    memory=memory,
     verbose=True
 )
 
 if __name__ == '__main__':
-    user_query = "Book a table for 2 at 7pm for Jet B"
-    result = agent.run(user_query)
-    print("result")
+    user_query = "Book a table at Jet B for 3 people tomorrow at 7pm"
+    print('Type "exit" to quit.')
+    while True:
+        user_input = input('You: ')
+        if user_input.lower() in ['exit', 'quit']:
+            break
+        response = agent.run(user_input)
+        print("Agent: ", response)

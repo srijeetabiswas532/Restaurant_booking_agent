@@ -6,3 +6,5 @@ langchain-community
 langchain-openai
 langchain-google-vertexai
 google-cloud-aiplatform
+fastapi
+uvicorn
