@@ -10,13 +10,18 @@ import requests
 #     party_size: int
 
 def book_reservation(input: str) -> str:
+    """Use this tool to book a reservation. 
+    Only call this tool when you know: name of the restaurant, number of people, date (e.g. 'tomorrow'), and time (e.g. '7pm'). Otherwise do NOT use this tool yet, ask the user for more complete information before using this tool or else it will throw an error.
+    Format input like: name:Jet B, date:tomorrow, time:7pm, party_size:2    
     """
-    Parses a flat input string and sends it to the mock API.
-    Assumes input string contains 'name=', 'date=', 'time=', 'party_size='
-    """
-
+    if ":" not in input:
+        return f"❌ Tool input was not in expected format. Got: {input}"
+    
+    if "name:" not in input.lower() or "date:" not in input.lower() or "time:" not in input.lower() or "size:" not in input.lower():
+        return f"❌ Tool input was not in expected format. Got: {input}. Format input like: name:Jet B, date:tomorrow, time:7pm, party_size:2"
+    
     # Simple parsing
-    fields = dict(item.strip().split("=") for item in input.split(","))
+    fields = dict(item.strip().split(":") for item in input.split(","))
     payload = {
         "name": fields["name"],
         "date": fields["date"],

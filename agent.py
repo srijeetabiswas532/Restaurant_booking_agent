@@ -50,7 +50,6 @@ agent = initialize_agent(
 )
 
 if __name__ == '__main__':
-    user_query = "Book a table at Jet B for 3 people tomorrow at 7pm"
     print('Type "exit" to quit.')
     while True:
         user_input = input('You: ')
