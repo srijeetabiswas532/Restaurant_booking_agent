@@ -63,4 +63,12 @@ May 15, 2025:
 * You need to be VERY specific with tool input. Or if you are going to be specific about exactly what the tool can take, you need to make sure it won't throw any errors by being too specific.
 * Did not do much today but my mock API end point works :) My agent successfully did multi-turn conversation with me to get all my information & was able to successfully complete a POST /book request on my remote server.
 
-* YOU LEFT OFF - USE A NON-MOCK API. EXPLORE A LITTLE MORE WITH YOUR MOCK ONE FIRST.
+**Day 5:** Continue to debug agent imperfections & connect to a real API.
+* The ReAct (reason & act loop) makes it so that the model will expect the tools to return an useful output: either (1) success or (2) error and specifically what the error is or something that it can reason about. If the tool responds with something like "this is an incorrect format", then the agent will just reason "oh I inputted it incorrectly" instead of "I'm missing crucial information, let me prompt the user."
+* Even something as small as "party size" vs. "party_size" throws errors. It is much better to use a Structural tool for structured input. Agent performs much poorer with unstructured information.
+So far, you have:
+    * Built a tool-using conversational agent
+    * Integrated with a mock FastAPI endpoint
+    * Added conversational memory for back-and-forth dialogue
+
+YOU LEFT OFF WITH TRYING TO GET ACCESS TO THE YELP API TO LET USERS GET ACCESS TO REAL RESTAURANT INFORMATION & BOOK IT.
