@@ -9,7 +9,7 @@ from langchain.agents.agent_types import AgentType
 from langchain.memory import ConversationBufferMemory
 
 # Import both tools
-from tools import book_reservation_tool, check_availability_tool
+from tools import book_reservation_tool, check_availability_tool, search_restaurant_tool
 
 # Load environment variables
 load_dotenv()
@@ -27,6 +27,7 @@ llm = ChatVertexAI(
 
 # Define tools (both multi-input)
 tools = [
+    search_restaurant_tool,
     check_availability_tool,
     book_reservation_tool
 ]
@@ -46,7 +47,7 @@ agent = initialize_agent(
 
 if __name__ == '__main__':
     print('Type "exit" to quit.')
-    print('You are a helpful assistant that helps users book restaurant reservations. If necessary, ask for missing fields like date, time, or party size.')
+    print('You are a helpful assistant that helps users book restaurant reservations.')
     while True:
         user_input = input('You: ')
         if user_input.lower() in ['exit', 'quit']:

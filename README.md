@@ -71,4 +71,10 @@ So far, you have:
     * Integrated with a mock FastAPI endpoint
     * Added conversational memory for back-and-forth dialogue
 
-YOU LEFT OFF WITH TRYING TO GET ACCESS TO THE YELP API TO LET USERS GET ACCESS TO REAL RESTAURANT INFORMATION & BOOK IT.
+**Day 6:** 
+* load_dotenv() reads key-value pairs from a .env file and adds them to environment variables so python code can access them using os.getenv('API_KEY')
+* Running into some issues when using two tools. If I use the search_restaurants tool and I select a restaurant from here, the agent does not remember in memory my selection, and will ask me for the restaurant name again while booking or checking availability. Directly injecting into memory using memory.chat_memory.add_user_message to inject it into the prompt so it does not easily forget.
+* Was able to create a local streamlit front-end to have my front-facing agent! 
+    * Still having issues with memory. 
+
+WHERE YOU LEFT OFF: Look into ways to fix the issue with memory. Other than that, just focus on cleaning and documentation. You're finished with this project!

@@ -2,6 +2,10 @@ from typing import Callable, Any
 from pydantic import BaseModel
 from langchain.tools import StructuredTool
 import requests
+import os
+from dotenv import load_dotenv
+from langchain.memory import ConversationBufferMemory
+
 
 class CheckAvailabilityInput(BaseModel):
     name: str
@@ -29,6 +33,7 @@ check_availability_tool = StructuredTool.from_function(
     func=check_availability_tool_fn,
     name="check_availability",
     description="""
+        Use this tool to check availability for a restaurant before booking the restaurant.
         Use this tool to check whether a reservation is available before booking.
         Requires the restaurant name, date, time (e.g. '7pm'), and number of people.
     """,
@@ -66,4 +71,41 @@ book_reservation_tool = StructuredTool.from_function(
         ONLY use this tool when you ALREADY know the restaurant name, party size, date (e.g. 'tomorrow'), and time (e.g. '7pm').
     """,
     args_schema=ReservationInput
+)
+
+
+# creating a class and function to search YELP using API for restaurants
+class RestaurantSearchInput(BaseModel):
+    location: str
+    term: str
+
+def search_restaurants_fn(term: str, location: str) -> str:
+    load_dotenv()
+    api_key = os.getenv("YELP_API_KEY")
+    headers = {"Authorization": f"Bearer {api_key}"}
+    params = {"term": term, "location": location, "limit": 5}
+
+    try:
+        res = requests.get("https://api.yelp.com/v3/businesses/search", headers=headers, params=params)
+        res.raise_for_status()
+        data = res.json()
+        businesses = data.get("businesses", [])
+
+        if not businesses:
+            return "No restaurants found for your search"
+        
+        response = "Top restaurants found:\n"
+        top_restaurant = businesses[0]["name"]
+        memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+        memory.chat_memory.add_ai_message(f"Great, I will use {top_restaurant} for future steps, like for the restaurant_name.")
+        return businesses
+    
+    except Exception as e:
+        return f"Failed to search restaurants: {str(e)}"
+    
+search_restaurant_tool = StructuredTool.from_function(
+    func=search_restaurants_fn,
+    name='search_restaurants',
+    description="Use this tool to search for real restaurants by cuisine, keyword, or name and location using Yelp.",
+    args_schema=RestaurantSearchInput
 )
