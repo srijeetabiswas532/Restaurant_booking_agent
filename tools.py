@@ -1,4 +1,4 @@
-from typing import Callable, Any
+from typing import Callable, Any, Optional
 from pydantic import BaseModel
 from langchain.tools import StructuredTool
 import requests
@@ -46,15 +46,23 @@ class ReservationInput(BaseModel):
     date: str
     time: str
     party_size: int
+    email: Optional[str] = None  # ✅ optional with default
 
-def book_reservation_tool_fn(name: str, date: str, time: str, party_size: int) -> str:
+# Wrap the booking function to inject email before calling the real function
+def wrapped_book_reservation_tool_fn(name: str, date: str, time: str, party_size: int) -> str:
+    from streamlit import session_state
+    email = session_state.get("user_email", "")
+    return book_reservation_tool_fn(name, date, time, party_size, email)
+
+
+def book_reservation_tool_fn(name: str, date: str, time: str, party_size: int, email: str) -> str:
     payload = {
         "name": name,
         "date": date,
         "time": time,
         "party_size": party_size,
+        "email": email
     }
-
     try:
         res = requests.post("http://localhost:8000/book", json=payload)
         res.raise_for_status()
@@ -64,7 +72,7 @@ def book_reservation_tool_fn(name: str, date: str, time: str, party_size: int) -
         return f"❌ Failed to book reservation: {str(e)}"
 
 book_reservation_tool = StructuredTool.from_function(
-    func=book_reservation_tool_fn,
+    func=wrapped_book_reservation_tool_fn,
     name="book_reservation",
     description="""
         Use this tool to book a restaurant reservation.

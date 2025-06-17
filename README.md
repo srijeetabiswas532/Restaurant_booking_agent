@@ -80,5 +80,6 @@ So far, you have:
 
 **Day 7:**
 * streamlit is reactive, not event-based. Every time a user submits a message, the whole script runs from top to bottom. 
+* re is a part of python's standard library.
 
-WHERE YOU LEFT OFF: Look into ways to fix the issue with memory. Also look for how to properly book. Other than that, just focus on cleaning and documentation. You're finished with this project!
+WHERE YOU LEFT OFF: Fix why isn't it sending an email successfully to your email. And also your check_avail function is broken. Need to walkthrough the flow, especially the mock_api script.
