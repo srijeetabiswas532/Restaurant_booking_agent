@@ -94,10 +94,10 @@ def search_restaurants_fn(term: str, location: str) -> str:
         if not businesses:
             return "No restaurants found for your search"
         
-        response = "Top restaurants found:\n"
-        top_restaurant = businesses[0]["name"]
-        memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-        memory.chat_memory.add_ai_message(f"Great, I will use {top_restaurant} for future steps, like for the restaurant_name.")
+        # response = "Top restaurants found:\n"
+        # top_restaurant = businesses[0]["name"]
+        # memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+        # memory.chat_memory.add_ai_message(f"Great, I will use {top_restaurant} for future steps, like for the restaurant_name.")
         return businesses
     
     except Exception as e:

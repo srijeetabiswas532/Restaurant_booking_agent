@@ -77,4 +77,8 @@ So far, you have:
 * Was able to create a local streamlit front-end to have my front-facing agent! 
     * Still having issues with memory. 
 
+
+**Day 7:**
+* streamlit is reactive, not event-based. Every time a user submits a message, the whole script runs from top to bottom. 
+
 WHERE YOU LEFT OFF: Look into ways to fix the issue with memory. Also look for how to properly book. Other than that, just focus on cleaning and documentation. You're finished with this project!
