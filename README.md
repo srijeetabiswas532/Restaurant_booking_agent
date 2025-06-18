@@ -82,4 +82,8 @@ So far, you have:
 * streamlit is reactive, not event-based. Every time a user submits a message, the whole script runs from top to bottom. 
 * re is a part of python's standard library.
 
-WHERE YOU LEFT OFF: Fix why isn't it sending an email successfully to your email. And also your check_avail function is broken. Need to walkthrough the flow, especially the mock_api script.
+**Day 8:**
+* Optional typing is helpful using pydantic
+* You need to restart your fastapi (mock API endpoint) after changing the environment variables. If you update env variables while fastapi is already running, it won't catch new values.
+* Sending from a gmail requires an app password from your account.
+* You are basically done with this project! Take a video of your demo & document the code well.

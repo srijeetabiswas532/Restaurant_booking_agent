@@ -49,7 +49,7 @@ class ReservationInput(BaseModel):
     email: Optional[str] = None  # ✅ optional with default
 
 # Wrap the booking function to inject email before calling the real function
-def wrapped_book_reservation_tool_fn(name: str, date: str, time: str, party_size: int) -> str:
+def wrapped_book_reservation_tool_fn(name: str, date: str, time: str, party_size: int, email: Optional[str] = None) -> str:
     from streamlit import session_state
     email = session_state.get("user_email", "")
     return book_reservation_tool_fn(name, date, time, party_size, email)

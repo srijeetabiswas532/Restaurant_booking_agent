@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
 import json
+from typing import Optional
+import traceback
+from email.message import EmailMessage
 
 load_dotenv()
 app = FastAPI()
@@ -15,17 +18,24 @@ class Reservation(BaseModel):
     date: str
     time: str
     party_size: int
-    email: str
+    email: Optional[str] = None
 
 def send_confirmation_email(reservation: Reservation):
+    from streamlit import session_state
+
+    print("Loop with confirmation email entered.")
     sender = os.getenv("EMAIL_SENDER")
     password = os.getenv("EMAIL_PASSWORD")
-    recipient = reservation.email
+    # sender = "jetb34632@gmail.com"
+    # password = "gboo ehno xkhe gnxg"
+    email = reservation.email if reservation.email else session_state.get("user_email", "")
+    # email = "srijeetabiswas366@gmail.com"
+    recipient = email
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = "📅 Your Restaurant Reservation is Confirmed!"
     msg["From"] = sender
-    msg["To"] = recipient
+    msg["To"] = str(recipient)
 
     html = f"""
     <html>
@@ -48,9 +58,9 @@ def send_confirmation_email(reservation: Reservation):
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
             smtp.login(sender, password)
             smtp.send_message(msg)
-        print("📧 Email sent successfully")
+        return "📧 Email sent successfully"
     except Exception as e:
-        print(f"❌ Failed to send email: {e}")
+        return f"❌ Failed to send email to {recipient}: {e} from {sender} with password {password} with traceback: {traceback.print_exc()}"
 
 # defines an API endpoint ("/book")
 # accepts a JSON body that matches Reservation pydantic model
@@ -60,10 +70,11 @@ def book(reservation: Reservation):
         json.dump(reservation.dict(), f)
         f.write("\n")
 
-    send_confirmation_email(reservation)
+    email_confirmation = send_confirmation_email(reservation)
 
     return {
-        "message": "Reservation confirmed ✅",
+        "message": f"Reservation confirmed ✅ and the status of the email send is: {email_confirmation}. If the email was sent, please say the phrase 'Email sent' somewhere in your response."
+        "",
         "details": reservation.dict()
     }
 

@@ -47,7 +47,7 @@ agent = initialize_agent(
 
 if __name__ == '__main__':
     print('Type "exit" to quit.')
-    print('You are a helpful assistant that helps users book restaurant reservations.')
+    print('You are a helpful assistant that helps users search for restaurants, look for availability, and book restaurant reservations.')
     while True:
         user_input = input('You: ')
         if user_input.lower() in ['exit', 'quit']:

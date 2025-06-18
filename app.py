@@ -27,6 +27,9 @@ st.session_state.user_email = st.text_input(
 if not is_valid_email(st.session_state.user_email):
     st.warning("⚠️ Please enter a valid email before chatting.")
 
+if is_valid_email(st.session_state.user_email):
+    st.write("Email accepted.")
+
 # Initialize chat history in Streamlit session
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
@@ -42,7 +45,7 @@ def handle_restaurant_selection(name: str):
     st.session_state.chat_history.append(("user", f"I choose {name}"))
     st.session_state.chat_history.append(("agent", f"Great! I'll use **{name}** for future steps like checking availability or booking."))
     # Clear restaurant choices after selection
-    st.session_state.restaurant_choices = []
+    # st.session_state.restaurant_choices = []
     st.rerun()
 
 # -----------------------
@@ -64,7 +67,7 @@ if user_input and is_valid_email(st.session_state.user_email):
             agent_response = f"❌ Error: {e}"
 
     st.session_state.chat_history.append(("agent", agent_response))
-    if "Reservation confirmed" in agent_response:
+    if "email sent" in agent_response.lower():
         st.success(f"📧 Confirmation email sent to {st.session_state.user_email}")
 
 
